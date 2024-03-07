@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Grid, Paper } from '@mui/material';
+import ChatBox from './components/ChatBox';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Grid container spacing={2} justifyContent="center">
+				<Grid item xs={5}>
+					<Paper>
+						<ChatBox />
+					</Paper>
+				</Grid>
+				<Grid item xs={5}>
+					<Paper>Search Results</Paper>
+				</Grid>
+			</Grid>
+		</div>
+	);
 }
 
 export default App;
