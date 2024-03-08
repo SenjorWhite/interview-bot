@@ -8,9 +8,7 @@ function App() {
 		<div className="App">
 			<Grid container spacing={2} justifyContent="center">
 				<Grid item xs={5}>
-					<Paper>
-						<ChatBox />
-					</Paper>
+					<ChatBox />
 				</Grid>
 				<Grid item xs={5}>
 					<Paper>Search Results</Paper>
