@@ -11,7 +11,7 @@ function App() {
 					<ChatBox />
 				</Grid>
 				<Grid item xs={5}>
-					<Paper>Search Results</Paper>
+					<Paper sx={{ m: '12px' }}>Search Results</Paper>
 				</Grid>
 			</Grid>
 		</div>

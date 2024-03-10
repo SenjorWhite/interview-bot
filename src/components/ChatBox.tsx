@@ -5,10 +5,18 @@ import { Container } from '@mui/system';
 import MessageBox from './MessageBox';
 
 const INPUT_MAX_LENGTH = 150;
+const INTERVIEW_API_HOST = 'http://interview.999studio.com/';
+
+interface Message {
+	context: string;
+	score?: number;
+	title?: string;
+	role: string;
+}
 
 const ChatBox: React.FC = () => {
 	const [inputValue, setInputValue] = useState('');
-	const [messages, setMassages] = useState<string[]>([]);
+	const [messages, setMassages] = useState<Message[]>([]);
 
 	useEffect(() => {
 		console.log(messages);
@@ -22,9 +30,30 @@ const ChatBox: React.FC = () => {
 
 	const handleSubmit = () => {
 		if (inputValue.trim() !== '') {
-			setMassages([...messages, inputValue.trim()]);
+			setMassages([...messages, { context: inputValue.trim(), role: 'interviewer' }]);
 		}
 		setInputValue('');
+		getInterviewResponse(inputValue.trim());
+	};
+
+	const getInterviewResponse = async (question: string) => {
+		try {
+			const response = await fetch(`${INTERVIEW_API_HOST}?query=${encodeURIComponent(question)}`);
+			console.log(encodeURIComponent(question));
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			const data = await response.json();
+			const newMessage: Message = {
+				context: data.context,
+				score: data.score,
+				title: data.title,
+				role: 'SP',
+			};
+			setMassages((prevMessages) => [...prevMessages, newMessage]);
+		} catch (error) {
+			console.error('There was a problem fetching the data:', error);
+		}
 	};
 
 	const renderMessageBoxes = () => {
@@ -32,7 +61,7 @@ const ChatBox: React.FC = () => {
 			.slice()
 			.reverse()
 			.map((message, index) => (
-				<MessageBox key={index} align={index % 2 === 1 ? 'left' : 'right'} text={message} />
+				<MessageBox key={index} align={message.role === 'SP' ? 'left' : 'right'} text={message.context} />
 			));
 	};
 
