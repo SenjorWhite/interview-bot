@@ -1,6 +1,5 @@
 import { Avatar, Paper } from '@mui/material';
-import { Container, bgcolor, margin } from '@mui/system';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 interface MessageBoxProps {
 	align: 'left' | 'right';
