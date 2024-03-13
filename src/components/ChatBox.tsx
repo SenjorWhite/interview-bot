@@ -3,6 +3,8 @@ import { IconButton, Paper, Divider, Input, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { Container } from '@mui/system';
 import MessageBox from './MessageBox';
+import { updateRag } from '../actions/ragActions';
+import { useDispatch } from 'react-redux';
 
 const INPUT_MAX_LENGTH = 150;
 const INTERVIEW_API_HOST = process.env.REACT_APP_INTERVIEW_API_HOST;
@@ -23,6 +25,8 @@ const ChatBox: React.FC = () => {
 				"Hello, I'm Senjor Pai. It's a pleasure to meet you. If you have any questions regarding my resume, personality, achievements, work experience, or education, feel free to ask.",
 		},
 	]);
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		console.log(messages);
@@ -50,6 +54,7 @@ const ChatBox: React.FC = () => {
 				throw new Error('Network response was not ok');
 			}
 			const data = await response.json();
+			dispatch(updateRag(data));
 			const newMessage: Message = {
 				context: data.context,
 				score: data.score,
