@@ -5,7 +5,7 @@ import { Container } from '@mui/system';
 import MessageBox from './MessageBox';
 
 const INPUT_MAX_LENGTH = 150;
-const INTERVIEW_API_HOST = process.env.INTERVIEW_API_HOST;
+const INTERVIEW_API_HOST = process.env.REACT_APP_INTERVIEW_API_HOST;
 
 interface Message {
 	context: string;

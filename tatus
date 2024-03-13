@@ -1,0 +1,13 @@
+[1mdiff --git a/src/components/ChatBox.tsx b/src/components/ChatBox.tsx[m
+[1mindex 70335ab..4739300 100644[m
+[1m--- a/src/components/ChatBox.tsx[m
+[1m+++ b/src/components/ChatBox.tsx[m
+[36m@@ -5,7 +5,7 @@[m [mimport { Container } from '@mui/system';[m
+ import MessageBox from './MessageBox';[m
+ [m
+ const INPUT_MAX_LENGTH = 150;[m
+[31m-const INTERVIEW_API_HOST = process.env.INTERVIEW_API_HOST;[m
+[32m+[m[32mconst INTERVIEW_API_HOST = process.env.REACT_APP_INTERVIEW_API_HOST;[m
+ [m
+ interface Message {[m
+ 	context: string;[m
