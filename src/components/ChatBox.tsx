@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Paper, InputBase, Divider, Input, Typography } from '@mui/material';
+import { IconButton, Paper, Divider, Input, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { Container } from '@mui/system';
 import MessageBox from './MessageBox';
@@ -16,7 +16,13 @@ interface Message {
 
 const ChatBox: React.FC = () => {
 	const [inputValue, setInputValue] = useState('');
-	const [messages, setMassages] = useState<Message[]>([]);
+	const [messages, setMassages] = useState<Message[]>([
+		{
+			role: 'SP',
+			context:
+				"Hello, I'm Senjor Pai. It's a pleasure to meet you. If you have any questions regarding my resume, personality, achievements, work experience, or education, feel free to ask.",
+		},
+	]);
 
 	useEffect(() => {
 		console.log(messages);
@@ -38,7 +44,7 @@ const ChatBox: React.FC = () => {
 
 	const getInterviewResponse = async (question: string) => {
 		try {
-			const response = await fetch(`${INTERVIEW_API_HOST}?query=${encodeURIComponent(question)}`);
+			const response = await fetch(`${INTERVIEW_API_HOST}?question=${encodeURIComponent(question)}`);
 			console.log(encodeURIComponent(question));
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
