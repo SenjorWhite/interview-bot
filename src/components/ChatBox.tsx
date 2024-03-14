@@ -25,6 +25,15 @@ const ChatBox: React.FC = () => {
 			context:
 				"Hello, I'm Senjor Pai. It's a pleasure to meet you. If you have any questions regarding my resume, personality, achievements, work experience, or education, feel free to ask.",
 		},
+		{
+			role: 'SP',
+			context:
+				"And Due to budget constraints, the conversations here are limited to single turns only. It's not possible to respond based on previous conversation records. Everything is solely based on responses generated from the knowledge base queried each time.",
+		},
+		{
+			role: 'SP',
+			context: 'You can start interacting with me anytime now.',
+		},
 	]);
 
 	const dispatch = useDispatch();
