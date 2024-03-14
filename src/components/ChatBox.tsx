@@ -80,7 +80,7 @@ const ChatBox: React.FC = () => {
 		<Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: '12px' }}>
 			<Paper
 				sx={{
-					width: '35vw',
+					width: '50vw',
 					height: '80vh',
 					display: 'flex',
 					flexDirection: 'column-reverse',
@@ -91,7 +91,7 @@ const ChatBox: React.FC = () => {
 			>
 				{renderMessageBoxes()}
 			</Paper>
-			<Paper sx={{ width: '35vw', display: 'flex', alignItems: 'center' }}>
+			<Paper sx={{ width: '50vw', display: 'flex', alignItems: 'center' }}>
 				<Input
 					value={inputValue}
 					onKeyDown={handleKeyPress}
