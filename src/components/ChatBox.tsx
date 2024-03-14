@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Paper, Divider, Input, Typography } from '@mui/material';
+import { IconButton, Paper, Divider, Input, Typography, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { Container } from '@mui/system';
 import MessageBox from './MessageBox';
@@ -18,6 +18,7 @@ interface Message {
 
 const ChatBox: React.FC = () => {
 	const [inputValue, setInputValue] = useState('');
+	const [loading, setLoading] = useState(false);
 	const [messages, setMassages] = useState<Message[]>([
 		{
 			role: 'SP',
@@ -41,9 +42,10 @@ const ChatBox: React.FC = () => {
 	const handleSubmit = () => {
 		if (inputValue.trim() !== '') {
 			setMassages([...messages, { context: inputValue.trim(), role: 'interviewer' }]);
+			setInputValue('');
+			setLoading(true);
+			getInterviewResponse(inputValue.trim());
 		}
-		setInputValue('');
-		getInterviewResponse(inputValue.trim());
 	};
 
 	const getInterviewResponse = async (question: string) => {
@@ -64,6 +66,8 @@ const ChatBox: React.FC = () => {
 			setMassages((prevMessages) => [...prevMessages, newMessage]);
 		} catch (error) {
 			console.error('There was a problem fetching the data:', error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -94,6 +98,7 @@ const ChatBox: React.FC = () => {
 			<Paper sx={{ width: '50vw', display: 'flex', alignItems: 'center' }}>
 				<Input
 					value={inputValue}
+					disabled={loading}
 					onKeyDown={handleKeyPress}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => setInputValue(event.target.value)}
 					sx={{ ml: 1, flex: 1 }}
@@ -105,8 +110,8 @@ const ChatBox: React.FC = () => {
 					{inputValue.length}/{INPUT_MAX_LENGTH}
 				</Typography>
 				<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-				<IconButton onClick={handleSubmit} color="primary" sx={{ p: '10px' }}>
-					<SendIcon />
+				<IconButton onClick={handleSubmit} disabled={loading} color="primary" sx={{ p: '10px' }}>
+					{loading ? <CircularProgress size={24} /> : <SendIcon />}
 				</IconButton>
 			</Paper>
 		</Container>
