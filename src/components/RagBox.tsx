@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material';
+import { Paper, Tooltip } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -12,17 +12,67 @@ const RagBox: React.FC = () => {
 	const renderDocTitles = (rag: any) => {
 		const docs = rag.rag?.docs;
 		if (docs) {
-			return docs.slice().map((docs: { title: string; score: number }, index: number) => (
-				<Paper style={{ margin: '5px', backgroundColor: '#fffbf5' }}>
-					<div style={{ padding: '5px', color: '#b0b0b0', fontSize: '14px', fontWeight: 'bold' }}>
-						{docs.title}
-					</div>
-					<div style={{ padding: '3px 0 5px 15px', fontSize: '13px', color: '#ff583b' }}>
-						{' '}
-						{(docs.score * 100).toFixed(2)}%
-					</div>
-				</Paper>
-			));
+			const origin = docs[0]?.score;
+
+			const tooltipContent = (context: string) => (
+				<div>
+					<p>Knowledge Base Context:</p>
+					<p>{context}</p>
+				</div>
+			);
+
+			return docs
+				.slice()
+				.map(
+					(
+						doc: { title: string; question: string; score: number; articleContext: string },
+						index: number,
+					) => {
+						const isWithinThreshold = origin - doc.score <= 0.05;
+
+						return (
+							<Tooltip title={tooltipContent(doc.articleContext)} placement="right">
+								<Paper
+									style={{
+										margin: '5px',
+										backgroundColor: isWithinThreshold ? '#fffbf5' : '#ededed',
+										border: '2px solid transparent',
+										transition: 'border 0.3s',
+									}}
+									onMouseEnter={(event) => {
+										const target = event.currentTarget as HTMLDivElement;
+										target.style.border = '2px solid #a3c0ff';
+									}}
+									onMouseLeave={(event) => {
+										const target = event.currentTarget as HTMLDivElement;
+										target.style.border = '2px solid transparent';
+									}}
+								>
+									<div
+										style={{
+											padding: '5px',
+											color: '#b0b0b0',
+											fontSize: '14px',
+											fontWeight: 'bold',
+										}}
+									>
+										{doc.title}
+									</div>
+									<div
+										style={{
+											padding: '3px 0 5px 15px',
+											fontSize: '13px',
+											color: isWithinThreshold ? 'green' : '#ff583b',
+										}}
+									>
+										{(doc.score * 100).toFixed(2)}%{' '}
+										{isWithinThreshold ? '(Selected)' : '(Unselected)'}
+									</div>
+								</Paper>
+							</Tooltip>
+						);
+					},
+				);
 		}
 	};
 
