@@ -13,6 +13,7 @@ interface Message {
 	context: string;
 	score?: number;
 	title?: string;
+	isStatic?: boolean;
 	role: string;
 }
 
@@ -22,16 +23,19 @@ const ChatBox: React.FC = () => {
 	const [messages, setMassages] = useState<Message[]>([
 		{
 			role: 'SP',
+			isStatic: true,
 			context:
 				"Hello, I'm Senjor Pai. It's a pleasure to meet you. If you have any questions regarding my resume, personality, achievements, work experience, or education, feel free to ask.",
 		},
 		{
 			role: 'SP',
+			isStatic: true,
 			context:
 				"And Due to budget constraints, the conversations here are limited to single turns only. It's not possible to respond based on previous conversation records. Everything is solely based on responses generated from the knowledge base queried each time.",
 		},
 		{
 			role: 'SP',
+			isStatic: true,
 			context: 'You can start interacting with me anytime now.',
 		},
 	]);
@@ -84,9 +88,17 @@ const ChatBox: React.FC = () => {
 		return messages
 			.slice()
 			.reverse()
-			.map((message, index) => (
-				<MessageBox key={index} align={message.role === 'SP' ? 'left' : 'right'} text={message.context} />
-			));
+			.map((message, index) => {
+				const isStatic = index === 0 ? false : true;
+				return (
+					<MessageBox
+						key={index}
+						align={message.role === 'SP' ? 'left' : 'right'}
+						isStatic={isStatic}
+						text={message.context}
+					/>
+				);
+			});
 	};
 
 	return (

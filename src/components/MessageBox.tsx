@@ -1,12 +1,13 @@
 import { Avatar, Paper } from '@mui/material';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface MessageBoxProps {
 	align: 'left' | 'right';
 	text: string;
+	isStatic?: boolean;
 }
 
-const MessageBox: React.FC<MessageBoxProps> = ({ align, text }) => {
+const MessageBox: React.FC<MessageBoxProps> = ({ align, text, isStatic }) => {
 	const basicStyle = { alignSelf: 'flex-end' };
 
 	const leftStyle = { margin: '2px auto 2px 2px', padding: '5px 10% 5px 5px' };
@@ -21,11 +22,34 @@ const MessageBox: React.FC<MessageBoxProps> = ({ align, text }) => {
 		</div>
 	);
 
+	const [displayedText, setDisplayedText] = useState('');
+
+	useEffect(() => {
+		if (isStatic || align === 'right') {
+			setDisplayedText(text);
+		} else {
+			const lines = text.split(' ');
+			let displayedTextSoFar = '';
+
+			const displayTextSegment = () => {
+				if (lines.length > 0) {
+					const nextLine = lines.shift();
+					displayedTextSoFar += nextLine + ' ';
+					setDisplayedText(displayedTextSoFar);
+
+					setTimeout(displayTextSegment, 50);
+				}
+			};
+
+			displayTextSegment();
+		}
+	}, [text, isStatic, align]);
+
 	return (
 		<div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', ...style }}>
 			{align === 'left' && spAvatar}
 			<Paper style={{ ...basicStyle, padding: '5px', backgroundColor: align === 'left' ? '#f0fdff' : '#fffff5' }}>
-				<div>{text}</div>
+				<div>{displayedText}</div>
 			</Paper>
 		</div>
 	);
