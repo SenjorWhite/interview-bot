@@ -21,58 +21,59 @@ const RagBox: React.FC = () => {
 				</div>
 			);
 
-			return docs
-				.slice()
-				.map(
-					(
-						doc: { title: string; question: string; score: number; articleContext: string },
-						index: number,
-					) => {
-						const isWithinThreshold = origin - doc.score <= 0.05;
-
-						return (
-							<Tooltip title={tooltipContent(doc.articleContext)} placement="right">
-								<Paper
+			return docs.slice().map(
+				(
+					doc: {
+						title: string;
+						question: string;
+						score: number;
+						articleContext: string;
+						selected?: boolean;
+					},
+					index: number,
+				) => {
+					return (
+						<Tooltip title={tooltipContent(doc.articleContext)} placement="right">
+							<Paper
+								style={{
+									margin: '5px',
+									backgroundColor: doc.selected ? '#fffbf5' : '#ededed',
+									border: '2px solid transparent',
+									transition: 'border 0.3s',
+								}}
+								onMouseEnter={(event) => {
+									const target = event.currentTarget as HTMLDivElement;
+									target.style.border = '2px solid #a3c0ff';
+								}}
+								onMouseLeave={(event) => {
+									const target = event.currentTarget as HTMLDivElement;
+									target.style.border = '2px solid transparent';
+								}}
+							>
+								<div
 									style={{
-										margin: '5px',
-										backgroundColor: isWithinThreshold ? '#fffbf5' : '#ededed',
-										border: '2px solid transparent',
-										transition: 'border 0.3s',
-									}}
-									onMouseEnter={(event) => {
-										const target = event.currentTarget as HTMLDivElement;
-										target.style.border = '2px solid #a3c0ff';
-									}}
-									onMouseLeave={(event) => {
-										const target = event.currentTarget as HTMLDivElement;
-										target.style.border = '2px solid transparent';
+										padding: '5px',
+										color: '#b0b0b0',
+										fontSize: '14px',
+										fontWeight: 'bold',
 									}}
 								>
-									<div
-										style={{
-											padding: '5px',
-											color: '#b0b0b0',
-											fontSize: '14px',
-											fontWeight: 'bold',
-										}}
-									>
-										{doc.title}
-									</div>
-									<div
-										style={{
-											padding: '3px 0 5px 15px',
-											fontSize: '13px',
-											color: isWithinThreshold ? 'green' : '#ff583b',
-										}}
-									>
-										{(doc.score * 100).toFixed(2)}%{' '}
-										{isWithinThreshold ? '(Selected)' : '(Unselected)'}
-									</div>
-								</Paper>
-							</Tooltip>
-						);
-					},
-				);
+									{doc.title}
+								</div>
+								<div
+									style={{
+										padding: '3px 0 5px 15px',
+										fontSize: '13px',
+										color: doc.selected ? 'green' : '#ff583b',
+									}}
+								>
+									{(doc.score * 100).toFixed(2)}% {doc.selected ? '(Selected)' : '(Unselected)'}
+								</div>
+							</Paper>
+						</Tooltip>
+					);
+				},
+			);
 		}
 	};
 
@@ -101,7 +102,6 @@ const RagBox: React.FC = () => {
 				RAG: Vector Search Results
 			</Paper>
 			{renderDocTitles(rag)}
-			{/* {JSON.stringify(rag.rag.docs && rag.rag.docs[0])}; */}
 		</Paper>
 	);
 };
