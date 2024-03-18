@@ -12,8 +12,6 @@ const RagBox: React.FC = () => {
 	const renderDocTitles = (rag: any) => {
 		const docs = rag.rag?.docs;
 		if (docs) {
-			const origin = docs[0]?.score;
-
 			const tooltipContent = (context: string) => (
 				<div>
 					<p>Knowledge Base Context:</p>
