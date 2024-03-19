@@ -94,7 +94,7 @@ const RagBox: React.FC = () => {
 					fontSize: '20px',
 					fontWeight: 'bold',
 					color: 'gray',
-					backgroundColor: '#e6ffe6',
+					backgroundColor: 'rgb(255 245 230)',
 				}}
 			>
 				RAG: Vector Search Results
